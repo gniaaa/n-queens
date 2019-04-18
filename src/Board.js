@@ -62,7 +62,7 @@
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
@@ -171,7 +171,7 @@
         c++;
       }
 
-      return false
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
@@ -199,7 +199,7 @@
       var board = this.rows();
       var n = board.length;
       var count = 0;
-      if (k >= n - 1){
+      if (k >= n - 1) {
         var r = k - (n - 1);
         var c = n - 1;
       } else {
@@ -209,7 +209,7 @@
 
       while (r < n && c >= 0){
         if (board[r][c] === 1){
-          count++
+          count++;
         }
         if (count > 1){
           return true;
