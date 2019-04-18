@@ -39,7 +39,7 @@ total O(n ** 3) time complexity by reducing conflict checks to O(n);
 //   };
 
 //   var solution = placeRooks(newBoard, 0, 0).rows();
-  
+
 //   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
 //   return solution;
 // };
@@ -50,19 +50,19 @@ total O(n ** 2) time complexity by reducing conflict checks to O(1);
 
 */
 
-window.findNRooksSolution = function(n) {
-  var newBoard = new Board ({n:n});
+window.findNRooksSolution = function (n) {
+  var newBoard = new Board({ n: n });
   var rowObj = {};
   var colObj = {};
   var solution;
 
-  var placeRooks = function(board, row, rooks){
+  var placeRooks = function (board, row, rooks) {
     if (rooks === n) {
       solution = board;
       return true;
     } else {
       //debugger;
-      for (let col = 0; col < n; col++){        
+      for (let col = 0; col < n; col++) {
         if (!(rowObj.hasOwnProperty(row)) && !(colObj.hasOwnProperty(col))) {
           board.togglePiece(row, col);
           rowObj[row] = row;
@@ -70,9 +70,9 @@ window.findNRooksSolution = function(n) {
 
           if (placeRooks(board, row + 1, rooks + 1)) {
             return true;
-          };
-                   
-          board.togglePiece(row, col); 
+          }
+
+          board.togglePiece(row, col);
           delete rowObj[row];
           delete colObj[col];
         }
@@ -81,7 +81,7 @@ window.findNRooksSolution = function(n) {
   };
   placeRooks(newBoard, 0, 0);
   solution = solution.rows();
-  
+
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
@@ -157,17 +157,17 @@ total O(n ** 2) time complexity by reducing conflict checks to O(1);
 
 */
 
-window.countNRooksSolutions = function(n) {
+window.countNRooksSolutions = function (n) {
   var solutionCount = 0;
   var rowObj = {};
   var colObj = {};
-  var newBoard = new Board ({n:n});
-  var placeRooks = function (board, row, rooks){
-    if (rooks === n){
+  var newBoard = new Board({ n: n });
+  var placeRooks = function (board, row, rooks) {
+    if (rooks === n) {
       solutionCount++;
     } else {
-      for (let col = 0; col < n; col++){
-        if (!rowObj.hasOwnProperty(row) && !colObj.hasOwnProperty(col)){
+      for (let col = 0; col < n; col++) {
+        if (!rowObj.hasOwnProperty(row) && !colObj.hasOwnProperty(col)) {
           board.togglePiece(row, col);
           rowObj[row] = row;
           colObj[col] = col;
@@ -198,29 +198,29 @@ total O(n ** 3) time complexity by reducing conflict checks to O(n);
 */
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
-  var newBoard = new Board ({n:n});
+window.findNQueensSolution = function (n) {
+  var newBoard = new Board({ n: n });
   var solution;
   // debugger;
-  var placeQueens = function(board, row, queens){
+  var placeQueens = function (board, row, queens) {
     if (queens === n) {
       solution = board;
       return true;
     } else {
-      for (let col = 0; col < n; col++){
+      for (let col = 0; col < n; col++) {
         board.togglePiece(row, col);
-        if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col+row) && !board.hasMajorDiagonalConflictAt(col-row)){
-          if(placeQueens(board, row + 1, queens + 1)){
+        if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col + row) && !board.hasMajorDiagonalConflictAt(col - row)) {
+          if (placeQueens(board, row + 1, queens + 1)) {
             return true;
           }
 
         }
-        board.togglePiece(row, col);  
+        board.togglePiece(row, col);
       }
     }
   };
 
-  if (n == 0){
+  if (n === 0) {
     solution = [];
   } else {
     placeQueens(newBoard, 0, 0);
@@ -238,18 +238,18 @@ total O(n ** 3) time complexity by reducing conflict checks to O(n);
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
-window.countNQueensSolutions = function(n) {
+window.countNQueensSolutions = function (n) {
   var solutionCount = 0;
-  var newBoard = new Board ({n:n});
-  var placeQueens = function (board, row, queens){
-    if (queens === n){
+  var newBoard = new Board({ n: n });
+  var placeQueens = function (board, row, queens) {
+    if (queens === n) {
       solutionCount++;
     } else {
-      for (let col = 0; col < n; col++){
+      for (let col = 0; col < n; col++) {
         board.togglePiece(row, col);
-        if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col+row) && !board.hasMajorDiagonalConflictAt(col-row)){
+        if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col + row) && !board.hasMajorDiagonalConflictAt(col - row)) {
           placeQueens(board, row + 1, queens + 1);
-        } 
+        }
         board.togglePiece(row, col);
       }
     }
@@ -262,7 +262,7 @@ window.countNQueensSolutions = function(n) {
 };
 
 
-/* 
+/*
 Time complexity:
 findNRooksSolution: O(n**2)
 countNRooksSolutions: O(n**2)
