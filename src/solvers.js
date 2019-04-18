@@ -198,24 +198,75 @@ total O(n ** 3) time complexity by reducing conflict checks to O(n);
 */
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
+// window.findNQueensSolution = function (n) {
+//   var newBoard = new Board({ n: n });
+//   var solution;
+//   // debugger;
+//   var placeQueens = function (board, row, queens) {
+//     if (queens === n) {
+//       solution = board;
+//       return true;
+//     } else {
+//       for (let col = 0; col < n; col++) {
+//         board.togglePiece(row, col);
+//         if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col + row) && !board.hasMajorDiagonalConflictAt(col - row)) {
+//           if (placeQueens(board, row + 1, queens + 1)) {
+//             return true;
+//           }
+
+//         }
+//         board.togglePiece(row, col);
+//       }
+//     }
+//   };
+
+//   if (n === 0) {
+//     solution = [];
+//   } else {
+//     placeQueens(newBoard, 0, 0);
+//     solution = solution ? solution.rows() : newBoard.rows();
+//   }
+//   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+//   return solution;
+// };
+
+/* 
+
+total O(n ** 2) time complexity by reducing conflict checks to O(1);
+
+*/
+
 window.findNQueensSolution = function (n) {
   var newBoard = new Board({ n: n });
+  var rowObj = {};
+  var colObj = {};
+  var majObj = {};
+  var minObj = {};
   var solution;
-  // debugger;
+
   var placeQueens = function (board, row, queens) {
     if (queens === n) {
       solution = board;
       return true;
     } else {
       for (let col = 0; col < n; col++) {
-        board.togglePiece(row, col);
-        if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col + row) && !board.hasMajorDiagonalConflictAt(col - row)) {
+        if (!(rowObj.hasOwnProperty(row)) && !(colObj.hasOwnProperty(col)) && !(majObj.hasOwnProperty(col - row)) && !(minObj.hasOwnProperty(col + row))) {
+          board.togglePiece(row, col);
+          rowObj[row] = row;
+          colObj[col] = col;
+          majObj[col - row] = col - row;
+          minObj[col + row] = col + row;
+
           if (placeQueens(board, row + 1, queens + 1)) {
             return true;
           }
 
+          board.togglePiece(row, col);
+          delete rowObj[row];
+          delete colObj[col];
+          delete majObj[col - row];
+          delete minObj[col + row];
         }
-        board.togglePiece(row, col);
       }
     }
   };
@@ -230,27 +281,35 @@ window.findNQueensSolution = function (n) {
   return solution;
 };
 
-/* 
+/* using objects as dictionary*/
 
-total O(n ** 3) time complexity by reducing conflict checks to O(n);
-
-*/
-
-
-// return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function (n) {
   var solutionCount = 0;
   var newBoard = new Board({ n: n });
+  var rowObj = {};
+  var colObj = {};
+  var majObj = {};
+  var minObj = {};
+
   var placeQueens = function (board, row, queens) {
     if (queens === n) {
       solutionCount++;
     } else {
       for (let col = 0; col < n; col++) {
-        board.togglePiece(row, col);
-        if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col + row) && !board.hasMajorDiagonalConflictAt(col - row)) {
+        if (!(rowObj.hasOwnProperty(row)) && !(colObj.hasOwnProperty(col)) && !(majObj.hasOwnProperty(col - row)) && !(minObj.hasOwnProperty(col + row))) {
+          board.togglePiece(row, col);
+          rowObj[row] = row;
+          colObj[col] = col;
+          majObj[col - row] = col - row;
+          minObj[col + row] = col + row;
+
           placeQueens(board, row + 1, queens + 1);
+          board.togglePiece(row, col);
+          delete rowObj[row];
+          delete colObj[col];
+          delete majObj[col - row];
+          delete minObj[col + row];
         }
-        board.togglePiece(row, col);
       }
     }
   };
@@ -262,11 +321,44 @@ window.countNQueensSolutions = function (n) {
 };
 
 
+
+
+/* 
+
+total O(n ** 3) time complexity by reducing conflict checks to O(n);
+
+*/
+
+// return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
+// window.countNQueensSolutions = function (n) {
+//   var solutionCount = 0;
+//   var newBoard = new Board({ n: n });
+
+//   var placeQueens = function (board, row, queens) {
+//     if (queens === n) {
+//       solutionCount++;
+//     } else {
+//       for (let col = 0; col < n; col++) {
+//         board.togglePiece(row, col);
+//         if (!board.hasRowConflictAt(row) && !board.hasColConflictAt(col) && !board.hasMinorDiagonalConflictAt(col + row) && !board.hasMajorDiagonalConflictAt(col - row)) {
+//           placeQueens(board, row + 1, queens + 1);
+//         }
+//         board.togglePiece(row, col);
+//       }
+//     }
+//   };
+
+//   placeQueens(newBoard, 0, 0);
+
+//   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+//   return solutionCount;
+// };
+
+
 /*
 Time complexity:
 findNRooksSolution: O(n**2)
 countNRooksSolutions: O(n**2)
 findNQueensSolution: O(n**3)
 countNQueensSolutions: O(n**3)
-
 */
